@@ -43,7 +43,12 @@ siconfi_api = function(url, httr = TRUE){
       }
       if(api_connection$status_code != 200){
         message('Problemas na conexao :(\nTentando acessar a API novamente ...\n')
-        Sys.sleep(1)
+        Sys.sleep(2)
+        api_connection = GET(url = url)
+      }
+      if(api_connection$status_code != 200){
+        message('Problemas na conexao :(\nTentando acessar a API uma última vez ...\n')
+        Sys.sleep(5)
         api_connection = GET(url = url)
       }
       if(api_connection$status_code != 200){
@@ -77,8 +82,13 @@ siconfi_api = function(url, httr = TRUE){
      }
      if(api_connection$status_code != 200){
        message('Problemas na conexao :(\nTentando acessar a API novamente ...\n')
-       Sys.sleep(1)
+       Sys.sleep(2)
        api_connection = GET(url = paste0(base_url, main_url, '?', param), add_headers('application/json'))
+     }
+     if(api_connection$status_code != 200){
+       message('Problemas na conexao :(\nTentando acessar a API uma última vez ...\n')
+       Sys.sleep(5)
+       api_connection = GET(url = url)
      }
      if(api_connection$status_code != 200){
        message('Problemas na conexao :(\nTentando acessar a API uma última vez ...\n')
