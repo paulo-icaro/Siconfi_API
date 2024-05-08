@@ -16,7 +16,7 @@ url_rreo = function(an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, c
     for(j in id_ente){
       for(x in nr_periodo){
         for(y in no_anexo){
-          main_url_param = paste0(url, '?',
+          url_rreo = paste0(url, '?',
                                   'an_exercicio=', i, '&',
                                   'nr_periodo=', x, '&',
                                   'co_tipo_demonstrativo=', co_tipo_demonstrativo, '&',
@@ -25,7 +25,7 @@ url_rreo = function(an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, c
                                   'id_ente=', id_ente
                                   )
           
-          return(main_url_param)
+          return(url_rreo)
         }
       }
     }
