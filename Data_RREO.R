@@ -5,6 +5,13 @@
 # --- Script by Paulo Icaro ---#
 
 
+# ------------------- #
+# --- Bibliotecas --- #
+# ------------------- #
+library(stringr)
+library(openxlsx)
+
+
 
 # ------------------------ #
 # -- Funcoes Auxiliares -- #
@@ -16,7 +23,7 @@ source('API_Siconfi.R')
 # ---------------- #
 # -- Parametros -- #
 # ---------------- #
-ano = 2018:2023
+ano = 2019:2023
 bimestre = 1:6
 ente = 43
 relatorio = c('01', '03', '04', '06')
@@ -62,10 +69,45 @@ for (w in 1:length(rreo_url)){
 # -------------- #
 # -- Rubricas -- #
 # -------------- #
-receitas_correntes = dataset_rreo |> filter(cod_conta == 'ReceitasCorrentes')
-receitas_capital = dataset_rreo |> filter(cod_conta == 'ReceitasDeCapital')
-operacoes_credito = dataset_rreo |> filter(cod_conta == 'ReceitasDeOperacoesDeCredito')
-investimentos_pagos = dataset_rreo |> filter(cod_conta == 'Investimentos')
-inversoes_financeiras_pagas = dataset_rreo |> filter(cod_conta == 'InversoesFinanceiras')
-despesas_correntes_pagas = dataset_rreo |> filter(cod_conta == 'DespesasCorrentes')
-juros_pagos = dataset_rreo |> filter(cod_conta == 'JurosEEncargosDaDivida')
+
+# Variaveis do Trabalho #
+caixa = dataset_rreo |> filter(cod_conta  == 'DisponibilidadeDeCaixaBruta' & (str_detect(coluna, 'Até o Bimestre 20') | str_detect(coluna, 'Até o Bimestre / 2018')))
+divida_consolidada = dataset_rreo |> filter(cod_conta == 'DividaConsolidada' & str_detect(coluna, 'Até o Bimestre 20'))
+investimentos_pagos = dataset_rreo |> filter(cod_conta == 'Investimentos' & coluna == 'DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)')
+receitas_correntes = dataset_rreo |> filter(cod_conta == 'ReceitasCorrentes' & coluna == 'Até o Bimestre (c)')
+dataset = cbind(investimentos_pagos[c(1, 3, 6, 15)], caixa[c(15)], divida_consolidada[c(15)])
+
+
+investimentos_pagos_rc = investimentos_pagos[c(15)]/receitas_correntes[c(15)]
+caixa_rc = caixa[c(15)]/receitas_correntes[c(15)]
+divida_consolidada_rc = divida_consolidada[c(15)]/receitas_correntes[c(15)]
+dataset = cbind(investimentos_pagos[c(1, 3, 6)], investimentos_pagos_rc, caixa_rc, divida_consolidada_rc)
+
+
+
+colnames(dataset) = c('Exercício', 'Período', 'Cod. IBGE', 'Investimentos', 'Caixa', 'Divida')
+
+# Outras Variaveis #
+# receitas_correntes = dataset_rreo |> filter(cod_conta == 'ReceitasCorrentes')
+# receitas_capital = dataset_rreo |> filter(cod_conta == 'ReceitasDeCapital')
+# operacoes_credito = dataset_rreo |> filter(cod_conta == 'ReceitasDeOperacoesDeCredito')
+# inversoes_financeiras_pagas = dataset_rreo |> filter(cod_conta == 'InversoesFinanceiras')
+# despesas_correntes_pagas = dataset_rreo |> filter(cod_conta == 'DespesasCorrentes')
+# juros_pagos = dataset_rreo |> filter(cod_conta == 'JurosEEncargosDaDivida')
+
+
+
+
+# --------------------- #
+# --- Armazenamento --- #
+# --------------------- #
+wb_rreo = createWorkbook(creator = 'pi')
+addWorksheet(wb = wb_rreo, sheetName = 'Microdados')
+writeData(wb = wb_rreo, sheet = 'Microdados', x = dataset, rowNames = TRUE)
+saveWorkbook(wb = wb_rreo, file = 'Dados_REEO.xlsx', overwrite = TRUE)
+
+
+# --------------- #
+# --- Limpeza --- #
+# --------------- #
+rm(ano, bimestre, ente, esfera, i, j, relatorio, tipo_demonstrativo, w, x, y)
