@@ -1,0 +1,429 @@
+---
+title: "Efeitos do Caixa e da Dívida sobre o Investimento Público para o Estado de Santa Catarina"
+author: "Paulo Icaro"
+output: 
+  html_document:
+    css: 'Folha de Estilos.css'
+chunk_output_type: console
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+#### Disciplina: Tópicos em Economia do Setor Público
+
+#### Equipe: Paulo Icaro e Kelly Samá
+
+
+
+
+
+<!----------------->
+<!-- BIBLIOTECAS -->
+<!----------------->
+
+```{r Packages, include = FALSE}
+library(knitr)
+```
+
+
+
+
+
+<!---------------------->
+<!-- SETAGENS GLOBAIS -->
+<!---------------------->
+
+```{r Global Settings, include = FALSE}
+opts_chunk$set(
+  echo = TRUE,
+  fig.align = 'center'
+)
+```
+
+
+
+
+
+<!--------------->
+<!-- PROPOSTA  -->
+<!--------------->
+
+## Proposta
+
+<divs>
+
+<p>
+|       Este trabalho se baseia na proposta de Matos et al. (2024), onde estes avaliam qual seria o papel do caixa e das dívidas sobre o investimento público para o estado do Ceará. O estudo compreendeu séries bimestrais que vão de 2011b6 à 2021b6.
+|       Diferente das ferramentas utilizadas no estudo, um modelo de correção de erros (VECM) associado a análise de Wavelet, este trabalho faz um acréscimo a metodologia VECM, adicionando uma composição bayesiana com parâmetros variando ao longo do tempo, TVP-BVEC[^1].
+</p>
+
+
+
+
+
+<!------------>
+<!-- DADOS  -->
+<!------------>
+
+## Dados
+
+<p>
+|       A séries de dados utilizadas foram extraídas via API do Sistema de Informações Contábeis e Fiscais do Setor Público Brasileiro ([SINCONFI](https://apidatalake.tesouro.gov.br/docs/siconfi/)). Os dados foram coletados para o estado de Santa Catarina, compreendendo uma série bimestral entre os anos de 2018 e 2023.
+|       Para a extração dos dados foram utilizadas duas funções auxiliares que, em resumo, realizam dois processos: geração de URL e conexão com a API. O processo de extração dos dados é detalhado na sequência.
+|       Em um primeiro momento, algumas bibliotecas e alguns parâmetros são anunciados. As funções associadas a geração da URL e conexão com a API são, respectivamente, *url_rreo* e *siconfi_api*.
+</p>
+
+\doublespacing
+
+```{r Data_RREO Parte 1, message = 'FALSE'}
+# =============================================== #
+# === COLETA E ARMAZENAMENTO DOS DADOS DA API === #
+# =============================================== #
+
+# --- Script by Paulo Icaro ---#
+
+
+# ------------------- #
+# --- Bibliotecas --- #
+# ------------------- #
+library(stringr)
+library(openxlsx)
+library(kableExtra)
+library(devtools)
+
+
+# ------------------------ #
+# -- Funcoes Auxiliares -- #
+# ------------------------ #
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/main/FG_URL_RREO.R')
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/main/API_Siconfi.R')
+
+
+# ---------------- #
+# -- Parametros -- #
+# ---------------- #
+ano = 2018:2023
+bimestre = 1:6
+ente = 42
+relatorio = c('01', '03', '04', '06')
+esfera = 'E'
+tipo_demonstrativo = 'RREO'
+
+
+# -------------------------------- #
+# -- Variaveis de Armazenamento -- #
+# -------------------------------- #
+rreo_url = NULL
+dataset_rreo = NULL
+```
+
+\doublespacing
+
+<p>
+A seguir é apresentado como é feita a extração dos dados. Em poucas palavras, com base nos parâmetros especificados[^2] a função *url_rreo* gera todas as combinações de url possíveis. Geradas as URL's, é a vez de acessar os dados utilizando a função *sinconfi_api* em combinação com a variável *rreo_url*, responsável por armazenar todas as URL's. Os dados obtidos são então armazenados na variável *dataset_rreo*.
+
+**Obs: O download dos dados pode levar alguns segundos ou talvez minutos. Erros durante o download podem ocorrer devido a conexão com a internet.**
+</p>
+
+\doublespacing
+
+```{r Data_RREO Parte 2, message = FALSE}
+# ----------------------- #
+# -- Geracao das URL's -- #
+# ----------------------- #
+for (i in ano){
+  for (j in ente){
+    for (x in bimestre){
+      for (y in relatorio){
+         rreo_url = rbind(rreo_url, url_rreo(i, x, tipo_demonstrativo, y, esfera, j))
+      }
+    }
+  }
+}
+
+
+# ------------------------ #
+# -- Extracao dos Dados -- #
+# ------------------------ #
+for (w in 1:length(rreo_url)){
+  dataset_rreo = rbind(dataset_rreo, siconfi_api(url = rreo_url[w]))
+  Sys.sleep(2)
+  message(paste(w, 'download(s) de', length(rreo_url), ' \n', sep = ' '))
+  if(w == length(rreo_url)){message('Todos os dados solicitados foram coletados !')}
+}
+
+```
+
+\doublespacing
+
+<p>
+|       Como mencionado, as séries coletadas são referente as variáveis investimentos, caixa e dívida. Seguindo o trabalho mencionado anteriormente, estas foram consideradas como razão da variável de receita corrente. As especificações de coleta dos dados, nome da rubrica e tipo de série desejada, são apresentadas a seguir. O trecho contendo as filtragens de variável são apresentados na sequência.
+</p>
+
+\doublespacing
+
+```{r Tabela 1, echo = FALSE}
+
+tabela1 = data.frame(
+  'Rubrica' = c('Investimentos', 'Caixa', 'Dívida', 'Receita Corrente'),
+  'Código_da_Conta' = c('Investimentos', 'DisponibilidadeDeCaixaBruta', 'DividaConsolidadaLiquida', 'ReceitasCorrentes'),
+  'Tipo_de_Série' = c('DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)', '(Até o Bimestre / 2018) | (Até o Bimestre 20)', 'Até o Bimestre', 'Até o Bimestre (c)')
+)
+
+kable(x = tabela1, align = 'c', booktabs = TRUE)
+```
+
+\doublespacing
+
+```{r Data_RREO Parte 3, message = FALSE}
+# -------------- #
+# -- Rubricas -- #
+# -------------- #
+
+# --- Variaveis do Trabalho --- #
+# Nível #
+caixa = dataset_rreo |> filter(cod_conta  == 'DisponibilidadeDeCaixaBruta' & (str_detect(coluna, 'Até o Bimestre 20') | str_detect(coluna, 'Até o Bimestre / 2018')))
+divida_consolidada = dataset_rreo |> filter(cod_conta == 'DividaConsolidadaLiquida' & str_detect(coluna, 'Até o Bimestre'))
+investimentos_pagos = dataset_rreo |> filter(cod_conta == 'Investimentos' & coluna == 'DESPESAS LIQUIDADAS ATÉ O BIMESTRE (h)')
+receitas_correntes = dataset_rreo |> filter(cod_conta == 'ReceitasCorrentes' & coluna == 'Até o Bimestre (c)')
+dataset = cbind(investimentos_pagos[c(1, 3, 6, 15)], caixa[c(15)], divida_consolidada[c(15)])
+
+# Variável/RCL #
+investimentos_pagos_rc = investimentos_pagos[c(15)]/receitas_correntes[c(15)]
+caixa_rc = caixa[c(15)]/receitas_correntes[c(15)]
+divida_consolidada_rc = divida_consolidada[c(15)]/receitas_correntes[c(15)]
+dataset = cbind(investimentos_pagos[c(1, 3, 6)], investimentos_pagos_rc, caixa_rc, divida_consolidada_rc)
+
+
+
+colnames(dataset) = c('Exercício', 'Período', 'Cod. IBGE', 'Investimentos', 'Caixa', 'Divida')
+
+
+
+# --------------------- #
+# --- Armazenamento --- #
+# --------------------- #
+wb_rreo = createWorkbook(creator = 'pi')
+addWorksheet(wb = wb_rreo, sheetName = 'Microdados')
+writeData(wb = wb_rreo, sheet = 'Microdados', x = dataset, rowNames = TRUE)
+saveWorkbook(wb = wb_rreo, file = 'Dados_RREO.xlsx', overwrite = TRUE)
+
+
+# --------------- #
+# --- Limpeza --- #
+# --------------- #
+rm(ano, bimestre, ente, esfera, i, j, relatorio, tipo_demonstrativo, w, x, y)
+rm(caixa, divida_consolidada, investimentos_pagos, receitas_correntes)
+```
+
+
+
+
+
+<!------------->
+<!-- MODELO  -->
+<!------------->
+
+## Modelo
+
+<p>
+|       O modelo empregado nas estimações é o de correção de erros bayesiano com parâmetros variando no tempo (TVP-BVEC).
+|       Este surge a partir de um cenário onde as variáveis trabalhadas não são estacionárias. As séries nesse cenário, apesar de não estacionárias, apresentam uma relação de curto e longo prazo.
+|       O modelo é dado pela seguinte equação:
+</p>
+
+\doublelinespace
+
+$$
+\begin{equation}
+  \tag{1}
+  \label{1}
+  \Delta y_t = \Pi w_t + \sum_{i=1}^{p-1} \beta \Delta y_{t-i} + \sum_{i = 0}^{s-1} \gamma \Delta x_{t-i}
+\end{equation}
+$$
+
+\doublelinespace
+
+<p>
+os termos $w_t$, $\Delta y_t$ e $\Delta x_t$ representam, respectivamente, o vetor de variáveis de cointegração, o vetor de endógenas diferenciadas e o vetor de variáveis exógenas diferenciadas.
+
+|       As primeiras proposições de adição de inferência bayesiana em modelos de vetor autoregressivos vieram do trabalhos de Doan, Litterman e Sims (1984) e Litterman (1986). As principais vantagens dessa ferramenta é lidar com sobreparametrização e amostras pequenas. De modo resumido, dado um conjunto de parâmetros a serem estimados $\theta$ e semja $Y$ o vetor de dados a ser estimado, a regra de Bayes é dada por
+</p>
+
+\doublelinespace
+
+$$
+\begin{equation}
+  \tag{2}
+  \label{2}
+  p(\theta|Y) = \frac {p(Y|\theta) p(\theta)} {p(Y)}
+\end{equation}
+$$ 
+\doublelinespace
+
+<p>
+a esquerda de (\ref{2}) é a Distribuição Posterior. No lado direto, o numerador é o produto da função de verossimilhança e a distribuição prévia (*prior*) que é a distribuição conjunta dos dados e dos parâmetros. No denominador, tem-se a densidade marginal dada por 
+</p>
+
+\doublelinespace
+
+$$
+\begin{equation}
+  \tag{3}
+  \label{3}
+  p(Y) = \int p( Y | \theta ) p(\theta) d \theta
+\end{equation}
+$$ 
+
+\doublelinespace
+
+<p>
+|       As especificações da distribuição prévia representa o conhecimento prévio do pesquisador acerca dos parâmetros e influencia nos resultados que são obtidos. A obtenção das amostras que compõe a a distribuição posterior, que são os parâmetros das endógenas variando no tempo, são obtidos através das simulações da Cadeia Markoviana de Monte Carlo[^3].
+</p>
+
+
+
+
+
+<!----------------------------------------->
+<!-- PROCESSO DE ESTIMACAO  E RESULTADOS -->
+<!----------------------------------------->
+
+## Processo de Estimação e Resultados
+
+### Estimação
+<p>
+|       A rotina de estimação do modelo TVP-BVEC é apresentado a seguir. Em poucas palavras, o script resume-se a definir os *inputs* utilizados para fins de estimação, os *priors* e calcular os parâmetros variantes no tempo (*posteriors*). 
+</p>
+
+\doublelinespace
+
+```{r Modelo TVP-BVEC Parte 1, message = FALSE, results = FALSE}
+# ==================================== #
+# === ESTIMACAO DO MODELO TVP_BVEC === #
+# ==================================== #
+
+
+
+# ------------------- #
+# --- Bibliotecas --- #
+# ------------------- #
+library(bvartools)        # Pacote para estimação de modelos bayesianos com parâmetros variando no tempo
+library(readxl)           # Pacote para leitura de arquivos em Excel
+library(aTSA)             # Pacote para cálculo da estacionariedade das variáveis
+
+
+
+# ---------------- #
+# --- Data Set --- #
+# ---------------- #
+dataset = read_excel(path = 'Dados_RREO.xlsx',
+                     sheet = 'Microdados',
+                     range = anchored('B1', dim = c(NA, 6)),
+                     col_names = TRUE)
+
+
+
+# ------------------- #
+# --- Time Series --- #
+# ------------------- #
+
+# Série Temporal de Endogenas #
+# Transformação das variáveis em objeto do tipo Time Series
+endo_var_ts = ts(data = dataset[,4:6], frequency = 6, start = c(2018, 1))         
+
+
+# Inputs para estimacao #
+inputs = gen_vec(data = endo_var_ts, p = 1, r = 1, s = 1, const = 'unrestricted', tvp = TRUE, iterations = 50000, burnin = 5000)
+
+
+# Priors para estimacao #
+# Obs: Foram utilizadas 50.000 simulacoes MCMC
+priors <- add_priors.bvecmodel(inputs,
+                               coef = list(v_i = 1, v_i_det = 0.1, shape = 3, rate = 0.0001, rate_det = 0.01),
+                               coint = list(v_i = 0, p_tau_i = 1, shape = 3, rate = 0.0001, rho = .999),
+                               sigma = list(df = "k", scale = 1, mu = 0, v_i = 0.01, sigma_h = 0.05, constant = 0.0001))
+
+
+# Calculo das posteriors
+posteriors = draw_posterior.bvecmodel(priors)
+```
+
+\doublelinespace
+
+|       Com respeito a estacionariedade das séries, foi realizado o teste  Dickey-Fuller Aumentado (ADF), onde foi verificada estacionariedade somente na série de Investimentos. Apesar disso, optamos por trabalhar com um modelo de correção de erros. Os resultados do teste ADF são apresentados na sequência.
+
+\doublelinespace
+
+```{r Modelo TVP-BVEC Parte 2, message = TRUE}
+# Teste ADF
+adf_invest = adf.test(endo_var_ts[,1])      # Teste de Estacionariedade (Investimentos)
+adf_caixa = adf.test(endo_var_ts[,2])       # Teste de Estacionariedade (Caixa)
+adf_divida = adf.test(endo_var_ts[,3])      # Teste de Estacionariedade (Dívida)
+```
+
+\doublelinespace
+
+### Resultados
+
+<p>
+|       A seguir são apresentados os principais resultados das simulações feitas através do modelo TVP-BVEC.
+</p>
+
+\doublelinespace
+
+```{r Modelo TVP-BVEC Parte 3, echo = FALSE, message = TRUE}
+# Resumo das estimacoes
+summary(posteriors)
+```
+
+\doublelinespace
+
+<p>
+**Algumas observações merecem ser aqui mencionadas:**
+
+* **Nas estimações  foi adotado apenas uma defasagem (1 lag); **
+
+* **No método MCMC foram consideradas 50.000 simulações e 5.000 burnin;**
+
+* **Para geração dos gráficos foi considerado um intervalo de confiança de 95%;**
+
+* **Os demais parâmetros utilizados segue o default da biblioteca[^4] bvartools disponibilizada pelo autor Franz Mohr.**
+
+\doublelinespace
+
+|       Avaliando a principal equação (Investimentos), em média tem-se que o investimento no bimestre anterior está associado a uma redução na ordem de `r round(summary(posteriors)[['coefficients']][['means']][1,1], digits = 2)` sobre o investimento corrente. O valor de `r round(summary(posteriors)[['coefficients']][['means']][1,2], digits = 2)`, por sua vez implica uma relação positiva entre caixa do periodo anterior e investimento no período atual. De forma intuitiva, a variável dívida apresenta uma relação negativa com o investimento de `r round(summary(posteriors)[['coefficients']][['means']][1,3], digits = 2)`.
+|       De maneira mais dinâmica, o gráfico que segue apresenta a evolução dos parâmetros de cada equação ao longo do tempo. Em linhas gerais, os parâmetros variantes apresentam o mesmo comportamento apresentado no resumo das estimações. Como mencionado anteriormente, é possível notar um efeito negativo da dívida ao passo que a variável caixa impacta positivamente os investimentos ainda que este primeiro afete os investimentos de maneira mais discreta. O investimento defasado possui um impacto pequeno sobre o investimento atual.
+</p>
+
+\doublelinespace
+
+```{r Modelo TVP-BVEC Parte 4, echo = FALSE, message = TRUE, fig.width=14, fig.height=12}
+# Plot dos resultados da estimação #
+# Obs: cálculo das margens com 95% de confianca
+plot.bvec(posteriors, style = 2, type = 'hist', ci = 0.95)
+```
+
+
+
+
+\doublelinespace
+
+<!----------------->
+<!-- REFERENCIAS -->
+<!----------------->
+## Referências
+
+1. Doan, Thomas, Robert B. Litterman and Christopher A. Sims. "Forecasting and Conditional Projection Using Realistic Prior Distributions," Econometric Reviews, Vol. 3, No. 1 Jan. 1984, pp. 1-100.
+
+2. Litterman, R. B. (1986). Forecasting with Bayesian Vector Autoregressions: Five Years of Experience. Journal of Business & Economic Statistics, 4(1), 25–38.
+
+3. Matos, Monteiro e Silva. (2024). On the Public Investment-Debt-Cash Linkages in the State Government of Ceará.
+
+
+[^1]: Time Varying Parameters Bayesian Vector Error Correction Model.
+[^2]: Os parâmetros são: ano, ente, bimestre, relatorio, esfera e tipo_demonstrativo.
+[^3]: Markov Chain Monte Carlo - MCMC.
+[^4]: É possível acessar a biblioteca do pacote clicando [aqui](https://github.com/franzmohr/bvartools/blob/master/R/plot.bvec.R).
+</divs>
