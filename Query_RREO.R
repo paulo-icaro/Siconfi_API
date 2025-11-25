@@ -52,4 +52,10 @@ query_rreo = function(ano, periodo, co_tipo_demonstrativo, anexo = NULL, esfera 
   # --- Retornar os dados --- #
   # ------------------------- #
   return(dataset_rreo)
+  
+  
+  # =============== #
+  # === Limpeza === #
+  # =============== #
+  rm(ano, bimestre, ente, esfera, relatorio, tipo_demonstrativo)
 }
