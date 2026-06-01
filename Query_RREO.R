@@ -29,9 +29,9 @@ query_rreo = function(ano, periodo, co_tipo_demonstrativo, anexo = NULL, esfera 
   # ------------------------- #
   for (i in ano){
     for (j in ente){
-      for (x in bimestre){
+      for (x in periodo){
         for (y in relatorio){
-          rreo_url = rbind(rreo_url, url_rreo(i, x, tipo_demonstrativo, y, esfera, j))
+          rreo_url = rbind(rreo_url, url_rreo(i, x, co_tipo_demonstrativo, y, esfera, j))
         }
       }
     }
