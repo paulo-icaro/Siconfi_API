@@ -9,7 +9,7 @@
 # === Consulta === #
 # ================ #
 
-query_rreo = function(ano, periodo, co_tipo_demonstrativo, anexo = NULL, esfera = NULL, ente, consultar_github = TRUE){
+query_rreo = function(ano, periodo, co_tipo_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar_github = TRUE){
   
   # -------------------------- #
   # --- Funcoes Auxiliares ---#
