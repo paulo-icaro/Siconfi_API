@@ -1,0 +1,17 @@
+/* ----------------------------- */
+/* --- ARQUIVO DE FORMATAÇÃO --- */
+/* ----------------------------- */
+
+/* --- Script by Paulo Icaro --- */
+
+.function_card{
+  width: auto;
+  height: 40px;
+  background: #1e50b890;
+  color: white;
+  padding: 10px 15px 10px;
+  border-radius: 10px;
+  text-align: left;
+  font-weight: bold;
+  margin-top: 20px;
+}
