@@ -1,0 +1,31 @@
+---
+title: "siconfi_rreo_api"
+format: html
+---
+
+<!------------------------------------------->
+<!--- Detalhamento Função Github Document --->
+<!------------------------------------------->
+:::{.content-visible when-format = 'gfm'}
+```r
+siconfi_rreo_api (url, httr = TRUE)
+```
+:::
+
+<!------------------------------->
+<!--- Detalhamento Função PDF --->
+<!------------------------------->
+:::{.content-visible when-format = 'pdf'}
+\begin{functioncard}
+\texttt{$siconfi\_rreo\_api (url, httr = TRUE)$}
+\end{functioncard}
+:::
+
+<!-------------------------------->
+<!--- Detalhamento Função HTML --->
+<!-------------------------------->
+:::{.content-visible when-format = 'html'}
+<div class = 'function_card'> 
+siconfi_rreo_api (url, httr = TRUE)
+</div>
+:::
