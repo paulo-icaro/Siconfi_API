@@ -8,7 +8,7 @@
 # ------------------------------ #
 # --- Funcao Geradora de URL --- #
 # ------------------------------ #
-siconfi_url_rreo = function(an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_esfera, id_ente){
+siconfi_rreo_url = function(an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_esfera, id_ente){
   url = 'https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/rreo?'
   
   for(i in an_exercicio){
