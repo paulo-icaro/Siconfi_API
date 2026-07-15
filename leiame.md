@@ -1,4 +1,4 @@
-# Obtendo dados do Siconfi via API
+# siconfi_rreo_api
 
 
 <!--------------->
@@ -9,9 +9,11 @@
 
 ### Propósito
 
+<p>
+
       Este pacote é uma valiosa ferramenta que facilita o acesso aos
 relatórios RREO disponíveis na API do
-[*Siconfi*](https://apidatalake.tesouro.gov.br/docs/siconfi). O pacote
+[**Siconfi**](https://apidatalake.tesouro.gov.br/docs/siconfi). O pacote
 dispõe de duas rotinas principais que são os scripts
 [**Siconfi_RREO_URL**](https://github.com/paulo-icaro/Siconfi_API/blob/main/FG_URL_RREO.R)
 e
@@ -25,6 +27,8 @@ Essa rotina combina as funcionalidades mencionadas executando uma
 perfeita extração das informações.  
       Vejamos a seguir detalhadamente como cada script funciona.
 
+</p>
+
 <!--------------->
 
 <!--- PARTE 2 --->
@@ -33,16 +37,128 @@ perfeita extração das informações.
 
 ### Siconfi_RREO_URL
 
-<div class="function_card">
+<!------------------------------------------->
 
-siconfi_url_rreo (an_exercicio, nr_periodo, co_tipo_demonstrativo,
-no_anexo, co_esfera, id_ente)
+<!--- Detalhamento Função Github Document --->
 
-</div>
+<!------------------------------------------->
+
+``` r
+siconfi_rreo_url (an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_esfera, id_ente)
+```
+
+<!------------------------------->
+
+<!--- Detalhamento Função PDF --->
+
+<!------------------------------->
+
+<!-------------------------------->
+
+<!--- Detalhamento Função HTML --->
+
+<!-------------------------------->
+
+<p>
 
       A função requer a especificação de alguns argumentos[^1]
 necessários a extração das informações. A tabela abaixo contém o
 detalhamento dos parâmetros.
 
+| **Argumento** | **Descrição** | **Observação** |
+|:---|:---|:---|
+| an_exercicio | Ano de exercício do relatório. | Ex: 2026 |
+| nr_periodo | Bimestre de referência. | Escolha um valor de 1 à 6. |
+| co_tipo_demonstrativo | Tipo do demonstrativo | Escolha entre RREO ou RREO Simplificado. |
+| no_anexo | Anexo associado ao demonstrativo |  |
+| co_esfera | Esfera do ente | M (Municípios), E (Estados), U (União) ou C (Consórcios) |
+| id_ente | Código identificador do ente federativo. | Ex: 23 (Ceará) |
+
+Vejamos uma demonstração:
+</p>
+
+``` r
+# -------------------------------- #
+# --- Exemplo - Geração de URL --- #
+# -------------------------------- #
+
+# ---  Funções e Bibliotecas --- #
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/Siconfi_RREO_URL.R')
+#source('Siconfi_RREO_URL.R')
+
+# --- Criar URL --- #
+ano = '2025'
+bimestre = 6
+tipo_demonstrativo = 'RREO'
+anexo = '04'
+esfera = 'E'
+ente = '23'
+
+siconfi_url = siconfi_url_rreo(ano, bimestre, tipo_demonstrativo, anexo, esfera, ente)
+```
+
+<!--------------->
+
+<!--- PARTE 3 --->
+
+<!--------------->
+
+### Siconfi_RREO_API
+
+<!------------------------------------------->
+
+<!--- Detalhamento Função Github Document --->
+
+<!------------------------------------------->
+
+``` r
+siconfi_rreo_api (url, httr = TRUE)
+```
+
+<!------------------------------->
+
+<!--- Detalhamento Função PDF --->
+
+<!------------------------------->
+
+<!-------------------------------->
+
+<!--- Detalhamento Função HTML --->
+
+<!-------------------------------->
+
+<p>
+
+      Esta função se conecta a API do Siconfi utilizando uma das duas
+funções de acesso: [**httr**](https://httr.r-lib.org/) ou
+[**httr2**](https://httr.r-lib.org/). Independente da opção selecionada,
+a função **Siconfi_RREO_API** verifica os status[^2] de conexão HTTP.
+Caso a conexão inicial falhe, ainda há três tentativas para obter uma
+conexão válida.  
+      Com respeito aos argumentos necessários, basta ao usuário informar
+a ***url***. Opcionalmente, o usuário pode informar se deseja utilizar o
+pacote *httr* (padrão) ou *httr2*.
+
+      Vejamos uma demonstração:
+
+</p>
+
+``` r
+# --------------------------------- #
+# --- Exemplo - Conexão com API --- #
+# --------------------------------- #
+
+# ---  Funções e Bibliotecas --- #
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/Siconfi_RREO_API.R')
+
+siconfi_url = 'https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2004&co_esfera=E&id_ente=23'
+data = 1
+
+siconfi_dataset = siconfi_rreo_api(url = siconfi_url, httr = TRUE)
+```
+
 [^1]: É importante atentar que todos os parâmetros devem ser
     especificados como string/character.
+
+[^2]: Uma conexão bem sucedida retorna um código 200, enquanto uma
+    conexão mal-sucedida retorna um código 400 ou 404.
