@@ -29,7 +29,7 @@ library(dplyr)                              # Biblioteca para manipulacao de dad
 # --- API - Funcao de Coleta --- #
 # ------------------------------ #
 
-siconfi_api = function(url, httr = TRUE){
+siconfi_rreo_api = function(url, httr = TRUE){
   
   
   # --- Conexao API - Utilizando httr --- #
