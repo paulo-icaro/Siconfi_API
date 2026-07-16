@@ -1,4 +1,4 @@
-# Obtendo dados do Siconfi via API
+# Obtendo dados do Siconfi(RREO) via API
 
 
 <!--------------->
@@ -267,4 +267,4 @@ head(siconfi_dataset[c(1,3,9,10,12,13,15)])
     conexão mal-sucedida retorna um código 400 ou 404.
 
 [^3]: Note que ao invocar a função **siconfi_rreo_query** fica
-    dispensado chamar as demais
+    dispensado chamar as demais.

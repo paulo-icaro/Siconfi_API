@@ -1,5 +1,5 @@
 ---
-title: "Obtendo dados do Siconfi via API"
+title: "Obtendo dados do Siconfi(RREO) via API"
 format: 
   gfm: default
   pdf:
@@ -134,7 +134,7 @@ head(siconfi_dataset[c(1,3,9,10,12,13,15)])
 {{< include includes/siconfi_rreo_query.qmd >}}
 
 <p>
-|       Por fim, a função **siconfi_rreo_query** une^[Note que ao invocar a função **siconfi_rreo_query** fica dispensado chamar as demais ] os atributos das funções anteriores permitindo realizar uma consulta de maneira eficaz. Aqui, o usuário terá de especificar os mesmos argumentos necessário para a função **siconfi_rreo_url**. Além disso, por padrão a função está programada para buscar essas duas funções auxiliares neste repositório. Caso ocorra algum problema no acesso, é possivel, **mediante download**, importar as funções do diretório local onde estão situadas para atingir o mesmo objetivo.
+|       Por fim, a função **siconfi_rreo_query** une^[Note que ao invocar a função **siconfi_rreo_query** fica dispensado chamar as demais.] os atributos das funções anteriores permitindo realizar uma consulta de maneira eficaz. Aqui, o usuário terá de especificar os mesmos argumentos necessário para a função **siconfi_rreo_url**. Além disso, por padrão a função está programada para buscar essas duas funções auxiliares neste repositório. Caso ocorra algum problema no acesso, é possivel, **mediante download**, importar as funções do diretório local onde estão situadas para atingir o mesmo objetivo.
 
 |       Vejamos uma demonstração:
 </p>
