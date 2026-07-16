@@ -15,8 +15,8 @@ siconfi_rreo_query = function(ano, periodo, co_tipo_demonstrativo, relatorio = N
   # --- Funcoes Auxiliares ---#
   # -------------------------- #
   if(consultar_github == TRUE){
-    source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_api.R')
-    source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_url.R')
+    source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_api.R')
+    source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_url.R')
   }
   
   # ---------------------------------- #
