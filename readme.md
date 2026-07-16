@@ -83,10 +83,10 @@ Vejamos uma demonstração:
 # -------------------------------- #
 
 # ---  Funções e Bibliotecas --- #
-source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_url.R')
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_url.R')
 #source('Siconfi_RREO_URL.R')
 
-# --- Criar URL --- #
+# --- Argumentos --- #
 ano = '2025'
 bimestre = 6
 tipo_demonstrativo = 'RREO'
@@ -94,6 +94,7 @@ anexo = '04'
 esfera = 'E'
 ente = '23'
 
+# --- Criar URL --- #
 siconfi_url = siconfi_rreo_url(ano, bimestre, tipo_demonstrativo, anexo, esfera, ente)
 siconfi_url
 ```
@@ -152,13 +153,30 @@ pacote *httr* (padrão) ou *httr2*.
 # --------------------------------- #
 
 # ---  Funções e Bibliotecas --- #
-source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_api.R')
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_api.R')
 
 siconfi_url = 'https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2004&co_esfera=E&id_ente=23'
 data = 1
 
+# --- Extração --- #
 siconfi_dataset = siconfi_rreo_api(url = siconfi_url, httr = TRUE)
+head(siconfi_dataset[c(1,3,9,10,12,13,15)])
 ```
+
+      exercicio periodo         anexo esfera                                 coluna
+    1      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+    2      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+    3      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+    4      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+    5      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+    6      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+                                                   cod_conta      valor
+    1              ReceitasCorrentesRPPSBrutasPrevidenciario 1111826929
+    2              ReceitasCorrentesRPPSBrutasPrevidenciario 1411590711
+    3  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  263657732
+    4  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  310915754
+    5 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  199792365
+    6 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  248278060
 
 <!--------------->
 
@@ -175,7 +193,7 @@ siconfi_dataset = siconfi_rreo_api(url = siconfi_url, httr = TRUE)
 <!------------------------------------------->
 
 ``` r
-siconfi_rreo_url (an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_esfera, id_ente)
+siconfi_rreo_query (ano, periodo, co_tipo_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar_github = TRUE)
 ```
 
 <!------------------------------->
@@ -190,8 +208,63 @@ siconfi_rreo_url (an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_
 
 <!-------------------------------->
 
+<p>
+
+      Por fim, a função **siconfi_rreo_query** une[^3] os atributos das
+funções anteriores permitindo realizar uma consulta de maneira eficaz.
+Aqui, o usuário terá de especificar os mesmos argumentos necessário para
+a função **siconfi_rreo_url**. Além disso, por padrão a função está
+programada para buscar essas duas funções auxiliares neste repositório.
+Caso ocorra algum problema no acesso, é possivel, **mediante download**,
+importar as funções do diretório local onde estão situadas para atingir
+o mesmo objetivo.
+
+      Vejamos uma demonstração:
+
+</p>
+
+``` r
+# ------------------------------------------ #
+# --- Exemplo - Extração das Informações --- #
+# ------------------------------------------ #
+
+# ---  Funções e Bibliotecas --- #
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_query.R')
+
+# --- Argumentos --- #
+ano = '2025'
+bimestre = 6
+tipo_demonstrativo = 'RREO'
+anexo = '04'
+esfera = 'E'
+ente = '23'
+
+
+# --- Extração --- #
+siconfi_dataset = siconfi_rreo_query(ano = ano, periodo = bimestre, co_tipo_demonstrativo = tipo_demonstrativo, relatorio = anexo, esfera = esfera, ente = ente, consultar_github = TRUE)
+head(siconfi_dataset[c(1,3,9,10,12,13,15)])
+```
+
+      exercicio periodo         anexo esfera                                 coluna
+    1      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+    2      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+    3      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+    4      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+    5      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+    6      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+                                                   cod_conta      valor
+    1              ReceitasCorrentesRPPSBrutasPrevidenciario 1111826929
+    2              ReceitasCorrentesRPPSBrutasPrevidenciario 1411590711
+    3  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  263657732
+    4  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  310915754
+    5 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  199792365
+    6 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  248278060
+
 [^1]: É importante atentar que todos os parâmetros devem ser
     especificados como string/character.
 
 [^2]: Uma conexão bem sucedida retorna um código 200, enquanto uma
     conexão mal-sucedida retorna um código 400 ou 404.
+
+[^3]: Note que ao invocar a função **siconfi_rreo_query** fica
+    dispensado chamar as demais

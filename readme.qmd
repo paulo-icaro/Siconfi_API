@@ -2,8 +2,6 @@
 title: "Obtendo dados do Siconfi via API"
 format: 
   gfm: default
-  html:
-    css: stylesheet.css
   pdf:
     pdf-engine: pdflatex
     header-includes: 
@@ -16,6 +14,9 @@ format:
         colframe=red!70!black,
         arc=2mm,
         boxrule=0.8pt}
+  html:
+    css: stylesheet.css
+  
 
 editor: source
 ---
@@ -70,10 +71,10 @@ Vejamos uma demonstração:
 # -------------------------------- #
 
 # ---  Funções e Bibliotecas --- #
-source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_url.R')
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_url.R')
 #source('Siconfi_RREO_URL.R')
 
-# --- Criar URL --- #
+# --- Argumentos --- #
 ano = '2025'
 bimestre = 6
 tipo_demonstrativo = 'RREO'
@@ -81,6 +82,7 @@ anexo = '04'
 esfera = 'E'
 ente = '23'
 
+# --- Criar URL --- #
 siconfi_url = siconfi_rreo_url(ano, bimestre, tipo_demonstrativo, anexo, esfera, ente)
 siconfi_url
 ```
@@ -100,7 +102,7 @@ siconfi_url
 |       Vejamos uma demonstração:
 </p>
 ```{r}
-#| label: Siconfi_RREO_API
+#| label: siconfi_rreo_api
 #| echo: TRUE
 #| message: FALSE
 #| warning: FALSE
@@ -112,12 +114,14 @@ siconfi_url
 # --------------------------------- #
 
 # ---  Funções e Bibliotecas --- #
-source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_api.R')
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_api.R')
 
 siconfi_url = 'https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/rreo?an_exercicio=2025&nr_periodo=6&co_tipo_demonstrativo=RREO&no_anexo=RREO-Anexo%2004&co_esfera=E&id_ente=23'
 data = 1
 
+# --- Extração --- #
 siconfi_dataset = siconfi_rreo_api(url = siconfi_url, httr = TRUE)
+head(siconfi_dataset[c(1,3,9,10,12,13,15)])
 ```
 
 
@@ -130,5 +134,36 @@ siconfi_dataset = siconfi_rreo_api(url = siconfi_url, httr = TRUE)
 {{< include includes/siconfi_rreo_query.qmd >}}
 
 <p>
-|       Por fim, a função **siconfi_rreo_query**
+|       Por fim, a função **siconfi_rreo_query** une^[Note que ao invocar a função **siconfi_rreo_query** fica dispensado chamar as demais ] os atributos das funções anteriores permitindo realizar uma consulta de maneira eficaz. Aqui, o usuário terá de especificar os mesmos argumentos necessário para a função **siconfi_rreo_url**. Além disso, por padrão a função está programada para buscar essas duas funções auxiliares neste repositório. Caso ocorra algum problema no acesso, é possivel, **mediante download**, importar as funções do diretório local onde estão situadas para atingir o mesmo objetivo.
+
+|       Vejamos uma demonstração:
 </p>
+
+```{r}
+#| label: siconfi_rreo_query
+#| echo: TRUE
+#| message: FALSE
+#| warning: FALSE
+#| comment: ''
+#| eval: TRUE
+
+# ------------------------------------------ #
+# --- Exemplo - Extração das Informações --- #
+# ------------------------------------------ #
+
+# ---  Funções e Bibliotecas --- #
+source('https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_query.R')
+
+# --- Argumentos --- #
+ano = '2025'
+bimestre = 6
+tipo_demonstrativo = 'RREO'
+anexo = '04'
+esfera = 'E'
+ente = '23'
+
+
+# --- Extração --- #
+siconfi_dataset = siconfi_rreo_query(ano = ano, periodo = bimestre, co_tipo_demonstrativo = tipo_demonstrativo, relatorio = anexo, esfera = esfera, ente = ente, consultar_github = TRUE)
+head(siconfi_dataset[c(1,3,9,10,12,13,15)])
+```
