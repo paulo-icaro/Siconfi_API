@@ -9,7 +9,7 @@
 # === Consulta === #
 # ================ #
 
-siconfi_query_rreo = function(ano, periodo, co_tipo_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar_github = TRUE){
+siconfi_rreo_query = function(ano, periodo, co_tipo_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar_github = TRUE){
   
   # -------------------------- #
   # --- Funcoes Auxiliares ---#
