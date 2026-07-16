@@ -81,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="readme.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="readme.md"><i class="bi bi-file-code"></i>Github (GFM)</a></li></ul></div></div>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="readme.md"><i class="bi bi-file-code"></i>Github (GFM)</a></li><li><a href="readme.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -187,10 +187,10 @@ Vejamos uma demonstração:
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------- #</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ---  Funções e Bibliotecas --- #</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_url.R'</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_url.R'</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#source('Siconfi_RREO_URL.R')</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Criar URL --- #</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Argumentos --- #</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>ano <span class="ot">=</span> <span class="st">'2025'</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>bimestre <span class="ot">=</span> <span class="dv">6</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>tipo_demonstrativo <span class="ot">=</span> <span class="st">'RREO'</span></span>
@@ -198,8 +198,9 @@ Vejamos uma demonstração:
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>esfera <span class="ot">=</span> <span class="st">'E'</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>ente <span class="ot">=</span> <span class="st">'23'</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>siconfi_url <span class="ot">=</span> <span class="fu">siconfi_rreo_url</span>(ano, bimestre, tipo_demonstrativo, anexo, esfera, ente)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>siconfi_url</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Criar URL --- #</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>siconfi_url <span class="ot">=</span> <span class="fu">siconfi_rreo_url</span>(ano, bimestre, tipo_demonstrativo, anexo, esfera, ente)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>siconfi_url</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/rreo?an_exercicio=2025&amp;nr_periodo=6&amp;co_tipo_demonstrativo=RREO&amp;no_anexo=RREO-Anexo%2004&amp;co_esfera=E&amp;id_ente=23"</code></pre>
 </div>
@@ -233,12 +234,30 @@ Vejamos uma demonstração:
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --------------------------------- #</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ---  Funções e Bibliotecas --- #</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'https://raw.githubusercontent.com/paulo-icaro/Siconfi_API/refs/heads/main/siconfi_rreo_api.R'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_api.R'</span>)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>siconfi_url <span class="ot">=</span> <span class="st">'https://apidatalake.tesouro.gov.br/ords/cdwhprd/siconfi/tt/rreo?an_exercicio=2025&amp;nr_periodo=6&amp;co_tipo_demonstrativo=RREO&amp;no_anexo=RREO-Anexo%2004&amp;co_esfera=E&amp;id_ente=23'</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="dv">1</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>siconfi_dataset <span class="ot">=</span> <span class="fu">siconfi_rreo_api</span>(<span class="at">url =</span> siconfi_url, <span class="at">httr =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Extração --- #</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>siconfi_dataset <span class="ot">=</span> <span class="fu">siconfi_rreo_api</span>(<span class="at">url =</span> siconfi_url, <span class="at">httr =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(siconfi_dataset[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">15</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  exercicio periodo         anexo esfera                                 coluna
+1      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+2      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+3      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+4      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+5      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+6      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+                                               cod_conta      valor
+1              ReceitasCorrentesRPPSBrutasPrevidenciario 1111826929
+2              ReceitasCorrentesRPPSBrutasPrevidenciario 1411590711
+3  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  263657732
+4  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  310915754
+5 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  199792365
+6 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  248278060</code></pre>
+</div>
 </div>
 <!--------------->
 <!--- PARTE 4 --->
@@ -259,8 +278,46 @@ Vejamos uma demonstração:
 <p>siconfi_rreo_query (ano, periodo, co_tipo_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar_github = TRUE)</p>
 </div>
 <p>
-</p><div class="line-block">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Por fim, a função <strong>siconfi_rreo_query</strong></div>
+</p><div class="line-block">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Por fim, a função <strong>siconfi_rreo_query</strong> une<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> os atributos das funções anteriores permitindo realizar uma consulta de maneira eficaz. Aqui, o usuário terá de especificar os mesmos argumentos necessário para a função <strong>siconfi_rreo_url</strong>. Além disso, por padrão a função está programada para buscar essas duas funções auxiliares neste repositório. Caso ocorra algum problema no acesso, é possivel, <strong>mediante download</strong>, importar as funções do diretório local onde estão situadas para atingir o mesmo objetivo.</div>
+<div class="line-block">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vejamos uma demonstração:</div>
 <p></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------ #</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Exemplo - Extração das Informações --- #</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------ #</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ---  Funções e Bibliotecas --- #</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'https://raw.githubusercontent.com/paulo-icaro/Siconfi_RREO_API/refs/heads/main/siconfi_rreo_query.R'</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Argumentos --- #</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>ano <span class="ot">=</span> <span class="st">'2025'</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>bimestre <span class="ot">=</span> <span class="dv">6</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>tipo_demonstrativo <span class="ot">=</span> <span class="st">'RREO'</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>anexo <span class="ot">=</span> <span class="st">'04'</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>esfera <span class="ot">=</span> <span class="st">'E'</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ente <span class="ot">=</span> <span class="st">'23'</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Extração --- #</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>siconfi_dataset <span class="ot">=</span> <span class="fu">siconfi_rreo_query</span>(<span class="at">ano =</span> ano, <span class="at">periodo =</span> bimestre, <span class="at">co_tipo_demonstrativo =</span> tipo_demonstrativo, <span class="at">relatorio =</span> anexo, <span class="at">esfera =</span> esfera, <span class="at">ente =</span> ente, <span class="at">consultar_github =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(siconfi_dataset[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">15</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  exercicio periodo         anexo esfera                                 coluna
+1      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+2      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+3      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+4      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+5      2025       6 RREO-Anexo 04      E                PREVISÃO ATUALIZADA (a)
+6      2025       6 RREO-Anexo 04      E RECEITAS REALIZADAS ATÉ O BIMESTRE (b)
+                                               cod_conta      valor
+1              ReceitasCorrentesRPPSBrutasPrevidenciario 1111826929
+2              ReceitasCorrentesRPPSBrutasPrevidenciario 1411590711
+3  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  263657732
+4  ReceitaDeContribuicoesDosSeguradosBrutaPrevidenciario  310915754
+5 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  199792365
+6 ReceitaDeContribuicoesDosSeguradoslAtivoPrevidenciario  248278060</code></pre>
+</div>
+</div>
 </section>
 
 
@@ -269,6 +326,7 @@ Vejamos uma demonstração:
 <ol>
 <li id="fn1"><p>É importante atentar que todos os parâmetros devem ser especificados como string/character.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Uma conexão bem sucedida retorna um código 200, enquanto uma conexão mal-sucedida retorna um código 400 ou 404.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Note que ao invocar a função <strong>siconfi_rreo_query</strong> fica dispensado chamar as demais <a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
