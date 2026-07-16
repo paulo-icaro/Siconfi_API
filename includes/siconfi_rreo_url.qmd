@@ -1,9 +1,3 @@
----
-title: "siconfi_rreo_url"
-format: html
-editor: source
----
-
 <!------------------------------------------->
 <!--- Detalhamento Função Github Document --->
 <!------------------------------------------->
@@ -18,7 +12,7 @@ siconfi_rreo_url (an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_
 <!------------------------------->
 :::{.content-visible when-format = 'pdf'}
 \begin{functioncard}
-\texttt{$siconfi\_rreo\_url (an\_exercicio, nr\_periodo, co\_tipo\_demonstrativo, no\_anexo \\, co\_esfera, id\_ente)$}
+\texttt{$\textbf{siconfi\_rreo\_url} (an\_exercicio, nr\_periodo, co\_tipo\_demonstrativo, no\_anexo \\, co\_esfera, id\_ente)$}
 \end{functioncard}
 :::
 

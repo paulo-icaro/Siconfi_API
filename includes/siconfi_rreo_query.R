@@ -1,0 +1,32 @@
+---
+  title: "siconfi_rreo_url"
+format: html
+editor: source
+---
+  
+  <!------------------------------------------->
+  <!--- Detalhamento Função Github Document --->
+  <!------------------------------------------->
+  :::{.content-visible when-format = 'gfm'}
+```r
+siconfi_rreo_url (an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_esfera, id_ente)
+```
+:::
+  
+  <!------------------------------->
+  <!--- Detalhamento Função PDF --->
+  <!------------------------------->
+  :::{.content-visible when-format = 'pdf'}
+\begin{functioncard}
+\texttt{$\textbf{siconfi\_rreo\_url} (an\_exercicio, nr\_periodo, co\_tipo\_demonstrativo, no\_anexo \\, co\_esfera, id\_ente)$}
+\end{functioncard}
+:::
+  
+  <!-------------------------------->
+  <!--- Detalhamento Função HTML --->
+  <!-------------------------------->
+  :::{.content-visible when-format = 'html'}
+<div class = 'function_card'> 
+  siconfi_rreo_url (an_exercicio, nr_periodo, co_tipo_demonstrativo, no_anexo, co_esfera, id_ente)
+</div>
+  :::

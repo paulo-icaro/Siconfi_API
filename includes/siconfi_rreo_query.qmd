@@ -3,24 +3,24 @@
 <!------------------------------------------->
 :::{.content-visible when-format = 'gfm'}
 ```r
-siconfi_rreo_api (url, httr = TRUE)
+siconfi_rreo_query (ano, periodo, co_tipo_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar_github = TRUE)
 ```
 :::
-
+  
 <!------------------------------->
 <!--- Detalhamento Função PDF --->
 <!------------------------------->
 :::{.content-visible when-format = 'pdf'}
 \begin{functioncard}
-\texttt{$\textbf{siconfi\_rreo\_api} (url, httr = TRUE)$}
+\texttt{$\textbf{siconfi\_rreo\_query} (ano, periodo, co\_tipo\_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar\_github = TRUE)$}
 \end{functioncard}
 :::
-
+  
 <!-------------------------------->
 <!--- Detalhamento Função HTML --->
 <!-------------------------------->
 :::{.content-visible when-format = 'html'}
 <div class = 'function_card'> 
-siconfi_rreo_api (url, httr = TRUE)
+siconfi_rreo_query (ano, periodo, co_tipo_demonstrativo, relatorio = NULL, esfera = NULL, ente, consultar_github = TRUE)
 </div>
 :::
